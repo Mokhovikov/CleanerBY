@@ -17,7 +17,7 @@ public class SecondActivity extends Activity {
         setContentView(R.layout.fragment_second);
 
         final Button button = (Button) findViewById(R.id.button_second);
-        final Button gps = (Button) findViewById(R.id.buttonGps);
+
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -31,17 +31,6 @@ public class SecondActivity extends Activity {
             }
         });
 
-        gps.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
 
-                Intent activityChangeIntent = new Intent(SecondActivity.this, main.class);
-
-                // currentContext.startActivity(activityChangeIntent);
-
-                SecondActivity.this.startActivity(activityChangeIntent);
-
-            }
-        });
     }
 }

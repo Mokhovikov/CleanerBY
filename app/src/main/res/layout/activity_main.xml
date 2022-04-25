@@ -9,6 +9,12 @@
 
 
     <TextView
+            android:id="@+id/tvLocationGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp" tools:layout_editor_absoluteY="349dp" tools:layout_editor_absoluteX="205dp">
+    </TextView>
+    <TextView
             android:text="@string/address"
             android:layout_width="287dp"
             android:layout_height="30dp" android:id="@+id/addressText" android:textSize="24sp"

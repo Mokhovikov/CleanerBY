@@ -18,13 +18,11 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.MyApplication">
 
-
-
         <activity
-                android:name=".main"
+                android:name=".MainActivity"
                 android:exported="true">
             <intent-filter>
-                <category android:name="android.intent.category."/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity
