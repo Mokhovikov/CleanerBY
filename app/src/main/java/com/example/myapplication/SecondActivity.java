@@ -28,6 +28,8 @@ public class SecondActivity extends Activity {
 
                 SecondActivity.this.startActivity(activityChangeIntent);
 
+
+
             }
         });
 

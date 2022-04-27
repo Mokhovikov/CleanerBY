@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,17 +18,23 @@ import android.widget.TextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.util.Date;
+
 
 public class MainActivity extends Activity {
 
     ImageView imageView;
     Button button;
-    TextView tvLocationGPS;
+    Button button2;
+    TextView tvLocationLong;
+    TextView tvLocationLat;
+    private  DBHelper dbHelper;
+    private Location location;
+    int count=0;
+    int currid = 0;
 
 
     private LocationManager locationManager;
-    StringBuilder sbGPS = new StringBuilder();
+
 
 
     @Override
@@ -37,15 +44,17 @@ public class MainActivity extends Activity {
 
         imageView = findViewById(R.id.imageview);
         button = findViewById(R.id.button);
-        tvLocationGPS = (TextView) findViewById(R.id.tvLocationGPS);
+        tvLocationLong = (TextView) findViewById(R.id.tvLocationLong);
+        tvLocationLat = (TextView) findViewById(R.id.tvLocationLat);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA)
-        != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{
-                    Manifest.permission.CAMERA
-            }, 100);
+                    != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                        Manifest.permission.CAMERA
+                }, 100);
+
         }
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -53,8 +62,19 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 100);
+
             }
         });
+
+       /* button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DBHelper myDB = new DBHelper(MainActivity.this);
+                com.example.myapplication.Location location = new com.example.myapplication.Location(Float.parseFloat(String.valueOf(tvLocationLat.getText())),Float.parseFloat(String.valueOf(tvLocationLong.getText())));
+                myDB.addLocation(location);
+            }
+        });*/
     }
 
     @Override
@@ -97,7 +117,8 @@ public class MainActivity extends Activity {
 
         @Override
         public void onLocationChanged(Location location) {
-            showLocation(location);
+            showLocationLong(location);
+           // showLocationLat(location);
         }
 
 
@@ -113,35 +134,64 @@ public class MainActivity extends Activity {
                 }, 100);
 
             }
-            showLocation(locationManager.getLastKnownLocation(provider));
+            //showLocationLat(locationManager.getLastKnownLocation(provider));
+            showLocationLong(locationManager.getLastKnownLocation(provider));
         }
 
 
     };
 
-    private void showLocation(Location location) {
+    /*private void showLocationLat(Location location) {
         if (location == null)
             return;
         if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
-            tvLocationGPS.setText(formatLocation(location));
+            tvLocationLat.setText(formatLocationLat(location));
+            //tvLocationLong.setText(formatLocationLong(location));
+        }*/
 
+
+
+
+    private void showLocationLong(Location location) {
+        button2 = findViewById(R.id.button2);
+        if (location == null)
+            return;
+        if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
+            tvLocationLat.setText(formatLocationLat(location));
+            tvLocationLong.setText(formatLocationLong(location));
+            button2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dbHelper = new DBHelper(MainActivity.this);
+                    com.example.myapplication.Location location1 = new com.example.myapplication.Location(Float.parseFloat(String.valueOf(formatLocationLat(location))),Float.parseFloat(formatLocationLong(location)));
+                    dbHelper.addLocation(location1);
+
+//записать в строку
+                }
+            });
         }
+
     }
 
-    private String formatLocation(Location location) {
+    private String formatLocationLat(Location location) {
         if (location == null)
             return "";
         return String.format(
-                "Coordinates: lat = %1$.4f, lon = %2$.4f, time = %3$tF %3$tT",
-                location.getLatitude(), location.getLongitude(), new Date(
-                        location.getTime()));
+                "%1$.4f",
+                location.getLatitude());
+    }
+
+
+    private String formatLocationLong(Location location) {
+        if (location == null)
+            return "";
+        return String.format(
+                "%1$.4f",
+                location.getLongitude());
     }
 
 
 
-    public void onClickLocationSettings(View view) {
-        startActivity(new Intent(
-                android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-    };
+
 
 }

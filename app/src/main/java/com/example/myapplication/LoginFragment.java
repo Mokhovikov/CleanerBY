@@ -18,6 +18,7 @@ public class LoginFragment extends Activity {
                         public void onClick(View v) {
                                 // Perform action on click
 
+
                                 Intent activityChangeIntent = new Intent(LoginFragment.this, SecondActivity.class);
 
                                 // currentContext.startActivity(activityChangeIntent);

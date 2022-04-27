@@ -17,4 +17,6 @@
     <string name="location_settings">Location settings</string>
     <string name="START">Старт</string>
     <string name="gps">GPS</string>
+    <string name="Long">Long</string>
+    <string name="lat">Lat</string>
 </resources>
